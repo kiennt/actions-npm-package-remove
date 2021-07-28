@@ -15,10 +15,26 @@ jobs:
           npm install
       - run: |
           npm run all
+
   test: # make sure the action works on a clean machine without building
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+
       - uses: ./
         with:
-          milliseconds: 1000
+          github_token: ${{secrets.MY_GITHUB_TOKEN}}
+          owner: tikivn
+          repo: tiki-miniapp-studio
+          packages: |
+            updater
+            getting-started
+            miniapp-toolbar
+            miniapp-authen
+            miniapp-devtools
+            miniapp-workspace
+            miniapp-payment
+            theia-dev-packages
+            miniapp-simulator
+          max_semver_pattern: 1.10.0
+          dry_run: true

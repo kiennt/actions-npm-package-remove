@@ -1,8 +1,8 @@
 {
-  "name": "typescript-action",
+  "name": "actions-npm-package-remove",
   "version": "0.0.0",
   "private": true,
-  "description": "TypeScript template action",
+  "description": "Remove old npm packages",
   "main": "lib/main.js",
   "scripts": {
     "build": "tsc",
@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/actions/typescript-action.git"
+    "url": "git+https://github.com/kiennt/actions-npm-package-remove.git"
   },
   "keywords": [
     "actions",
@@ -25,15 +25,20 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@actions/core": "^1.4.0"
+    "@actions/core": "^1.4.0",
+    "@octokit/rest": "^18.7.1",
+    "semver": "^7.3.5"
   },
   "devDependencies": {
+    "@types/jest": "^26.0.24",
     "@types/node": "^16.3.3",
+    "@types/semver": "^7.3.8",
     "@typescript-eslint/parser": "^4.28.3",
     "@vercel/ncc": "^0.29.0",
     "eslint": "^7.31.0",
     "eslint-plugin-github": "^4.1.1",
     "eslint-plugin-jest": "^24.3.6",
+    "eslint-plugin-prettier": "^3.4.0",
     "jest": "^27.0.6",
     "js-yaml": "^4.1.0",
     "prettier": "2.2.1",

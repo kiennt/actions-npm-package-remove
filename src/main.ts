@@ -1,14 +1,34 @@
 import * as core from '@actions/core'
-import {wait} from './wait'
+import {deletePackages} from './github'
 
 async function run(): Promise<void> {
   try {
-    const ms: string = core.getInput('milliseconds')
-    core.debug(`Waiting ${ms} milliseconds ...`) // debug is only output if you set the secret `ACTIONS_RUNNER_DEBUG` to true
+    const githubToken = core.getInput('github_token')
+    const owner = core.getInput('owner')
+    const repo = core.getInput('repo')
+    const packages = core.getMultilineInput('packages')
+    const semVerPattern = core.getInput('max_semver_pattern')
+    const dryRun = core.getBooleanInput('dry_run')
 
-    core.debug(new Date().toTimeString())
-    await wait(parseInt(ms, 10))
-    core.debug(new Date().toTimeString())
+    core.debug(
+      JSON.stringify({
+        githubToken,
+        owner,
+        repo,
+        packages,
+        semVerPattern,
+        dryRun
+      })
+    )
+
+    await deletePackages({
+      githubToken,
+      owner,
+      repo,
+      packages,
+      semVerPattern,
+      dryRun
+    })
 
     core.setOutput('time', new Date().toTimeString())
   } catch (error) {

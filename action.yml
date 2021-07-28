@@ -1,11 +1,26 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'Kien Nguyen'
+description: 'Delete old npm packages'
+author: 'kiennt2288@gmail.com'
 inputs:
-  milliseconds: # change this
+  github_token:
     required: true
-    description: 'input description here'
-    default: 'default value if applicable'
+    description: 'github token'
+  owner:
+    required: true
+    description: 'github organization'
+  repo:
+    required: true
+    description: 'package repo on github'
+  packages:
+    required: true
+    description: 'list of packages to delete'
+  max_semver_pattern:
+    required: true
+    description: 'max semver pattern'
+  dry_run:
+    rerquired: false
+    description: 'turn this on will only list packages'
+    default: false
 runs:
   using: 'node12'
   main: 'dist/index.js'
