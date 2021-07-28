@@ -49,7 +49,10 @@ export const deletePackages = async (params: OctokitParams): Promise<void> => {
   const octokit = new Octokit({auth: params.githubToken})
   const packages = await listAllVersionForAPackageWillBeDeleted(params)
   if (params.dryRun) {
-    console.log(deletePackages)
+    Object.keys(packages).forEach(pkgName => {
+      console.log(`delete package ${pkgName}`)
+      console.log(packages[pkgName])
+    })
     return
   }
   const patchDelete = Object.keys(packages).map(pkgName => {

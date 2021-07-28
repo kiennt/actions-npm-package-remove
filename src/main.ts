@@ -11,19 +11,6 @@ async function run(): Promise<void> {
     const semVerPattern = core.getInput('max_semver_pattern')
     const dryRun = core.getBooleanInput('dry_run')
 
-    console.log(`deleting packages from ${owner}/${repo}`)
-
-    core.debug(
-      JSON.stringify({
-        githubToken,
-        owner,
-        repo,
-        packages,
-        semVerPattern,
-        dryRun
-      })
-    )
-
     await deletePackages({
       githubToken,
       owner,

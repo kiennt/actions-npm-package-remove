@@ -52,7 +52,10 @@ const deletePackages = (params) => __awaiter(void 0, void 0, void 0, function* (
     const octokit = new rest_1.Octokit({ auth: params.githubToken });
     const packages = yield listAllVersionForAPackageWillBeDeleted(params);
     if (params.dryRun) {
-        console.log(exports.deletePackages);
+        Object.keys(packages).forEach(pkgName => {
+            console.log(`delete package ${pkgName}`);
+            console.log(packages[pkgName]);
+        });
         return;
     }
     const patchDelete = Object.keys(packages).map(pkgName => {
@@ -118,15 +121,6 @@ function run() {
             const packages = core.getMultilineInput('packages');
             const semVerPattern = core.getInput('max_semver_pattern');
             const dryRun = core.getBooleanInput('dry_run');
-            console.log(`deleting packages from ${owner}/${repo}`);
-            core.debug(JSON.stringify({
-                githubToken,
-                owner,
-                repo,
-                packages,
-                semVerPattern,
-                dryRun
-            }));
             yield github_1.deletePackages({
                 githubToken,
                 owner,
