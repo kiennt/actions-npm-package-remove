@@ -1,7 +1,8 @@
 name: 'npm-package-remove'
 description: 'Delete old npm packages'
-icon: 'archive'
-color: 'red'
+branding:
+  icon: 'archive'
+  color: 'red'
 author: 'kiennt2288@gmail.com'
 inputs:
   github_token:
