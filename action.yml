@@ -1,4 +1,4 @@
-name: 'Kien Nguyen'
+name: 'npm-package-remove'
 description: 'Delete old npm packages'
 author: 'kiennt2288@gmail.com'
 inputs:
