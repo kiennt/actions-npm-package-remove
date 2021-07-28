@@ -39,5 +39,5 @@ jobs:
             miniapp-payment
             theia-dev-packages
             miniapp-simulator
-          max_semver_pattern: 1.10.0
+          max_semver_pattern: 1.15.0
           dry_run: true
