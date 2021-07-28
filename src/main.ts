@@ -2,6 +2,7 @@ import * as core from '@actions/core'
 import {deletePackages} from './github'
 
 async function run(): Promise<void> {
+  console.log('run action')
   try {
     const githubToken = core.getInput('github_token')
     const owner = core.getInput('owner')
@@ -10,7 +11,7 @@ async function run(): Promise<void> {
     const semVerPattern = core.getInput('max_semver_pattern')
     const dryRun = core.getBooleanInput('dry_run')
 
-    core.debug('hello cac ban')
+    console.log(`deleting packages from ${owner}/${repo}`)
 
     core.debug(
       JSON.stringify({

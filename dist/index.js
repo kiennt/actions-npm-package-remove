@@ -110,6 +110,7 @@ const core = __importStar(__nccwpck_require__(2186));
 const github_1 = __nccwpck_require__(5928);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
+        console.log('run action');
         try {
             const githubToken = core.getInput('github_token');
             const owner = core.getInput('owner');
@@ -117,7 +118,7 @@ function run() {
             const packages = core.getMultilineInput('packages');
             const semVerPattern = core.getInput('max_semver_pattern');
             const dryRun = core.getBooleanInput('dry_run');
-            core.debug('hello cac ban');
+            console.log(`deleting packages from ${owner}/${repo}`);
             core.debug(JSON.stringify({
                 githubToken,
                 owner,
