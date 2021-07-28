@@ -21,6 +21,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - run: |
+          echo "Hello"
+
       - uses: ./
         with:
           github_token: ${{secrets.MY_GITHUB_TOKEN}}
