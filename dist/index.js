@@ -117,6 +117,7 @@ function run() {
             const packages = core.getMultilineInput('packages');
             const semVerPattern = core.getInput('max_semver_pattern');
             const dryRun = core.getBooleanInput('dry_run');
+            core.debug('hello cac ban');
             core.debug(JSON.stringify({
                 githubToken,
                 owner,
