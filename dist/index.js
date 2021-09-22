@@ -26,12 +26,23 @@ const listAllVersionForAPackageWillBeDeleted = (params) => __awaiter(void 0, voi
     const octokit = new rest_1.Octokit({ auth: params.githubToken });
     const promiseResolver = params.packages.map((pkg) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const data = yield octokit.paginate(octokit.rest.packages.getAllPackageVersionsForPackageOwnedByOrg, {
-                package_type: 'npm',
-                org: params.owner,
-                package_name: pkg,
-                per_page: 30
-            }, resp => resp.data);
+            let data = [];
+            if (params.owner) {
+                data = yield octokit.paginate(octokit.rest.packages.getAllPackageVersionsForPackageOwnedByOrg, {
+                    package_type: 'npm',
+                    org: params.owner,
+                    package_name: pkg,
+                    per_page: 30
+                }, resp => resp.data);
+            }
+            else if (params.username) {
+                data = yield octokit.paginate(octokit.rest.packages.getAllPackageVersionsForPackageOwnedByUser, {
+                    package_type: 'npm',
+                    username: params.username,
+                    package_name: pkg,
+                    per_page: 30
+                });
+            }
             return data
                 .map(d => ({ id: d.id, name: d.name }))
                 .filter(({ name }) => {
@@ -60,12 +71,22 @@ const deletePackages = (params) => __awaiter(void 0, void 0, void 0, function* (
     }
     const patchDelete = Object.keys(packages).map(pkgName => {
         return packages[pkgName].map((version) => __awaiter(void 0, void 0, void 0, function* () {
-            return octokit.packages.deletePackageVersionForOrg({
-                package_type: 'npm',
-                package_version_id: version.id,
-                package_name: pkgName,
-                org: params.owner
-            });
+            if (params.owner) {
+                return octokit.packages.deletePackageVersionForOrg({
+                    package_type: 'npm',
+                    package_version_id: version.id,
+                    package_name: pkgName,
+                    org: params.owner
+                });
+            }
+            else if (params.username) {
+                return octokit.packages.deletePackageVersionForAuthenticatedUser({
+                    package_type: 'npm',
+                    package_version_id: version.id,
+                    package_name: pkgName,
+                    username: params.username
+                });
+            }
         }));
     });
     yield Promise.all(patchDelete);
@@ -117,6 +138,7 @@ function run() {
         try {
             const githubToken = core.getInput('github_token');
             const owner = core.getInput('owner');
+            const username = core.getInput('username');
             const repo = core.getInput('repo');
             const packages = core.getMultilineInput('packages');
             const semVerPattern = core.getInput('max_semver_pattern');
@@ -124,6 +146,7 @@ function run() {
             yield github_1.deletePackages({
                 githubToken,
                 owner,
+                username,
                 repo,
                 packages,
                 semVerPattern,
@@ -132,6 +155,8 @@ function run() {
             core.setOutput('time', new Date().toTimeString());
         }
         catch (error) {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             core.setFailed(error.message);
         }
     });
