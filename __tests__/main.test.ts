@@ -12,9 +12,9 @@ describe('test', () => {
       githubToken: '',
       username: 'hoangviet',
       repo: 'tiki-miniapp',
-      packages: ['tf-miniapp', 'tf-miniapp-core'],
-      semVerPattern: '1.75.0',
-      dryRun: true
+      packages: ['tf-miniapp'],
+      semVerPattern: '1.44.0',
+      dryRun: false
     })
   })
 })

@@ -80,7 +80,7 @@ export const deletePackages = async (params: OctokitParams): Promise<void> => {
           org: params.owner
         })
       } else if (params.username) {
-        return octokit.packages.deletePackageVersionForAuthenticatedUser({
+        return octokit.packages.deletePackageVersionForUser({
           package_type: 'npm',
           package_version_id: version.id,
           package_name: pkgName,
