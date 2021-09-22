@@ -11,6 +11,9 @@ inputs:
   owner:
     required: true
     description: 'github organization'
+  username:
+    required: true
+    description: 'github username'
   repo:
     required: true
     description: 'package repo on github'
