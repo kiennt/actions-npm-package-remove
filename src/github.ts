@@ -3,7 +3,8 @@ import semver from 'semver'
 
 type OctokitParams = {
   githubToken: string
-  owner: string
+  owner?: string
+  username?: string
   repo: string
   packages: Array<string>
   semVerPattern: string
@@ -19,16 +20,30 @@ const listAllVersionForAPackageWillBeDeleted = async (
 
   const promiseResolver = params.packages.map(async (pkg: string) => {
     try {
-      const data = await octokit.paginate(
-        octokit.rest.packages.getAllPackageVersionsForPackageOwnedByOrg,
-        {
-          package_type: 'npm',
-          org: params.owner,
-          package_name: pkg,
-          per_page: 30
-        },
-        resp => resp.data
-      )
+      let data: Array<DeleteVersion> = []
+      if (params.owner) {
+        data = await octokit.paginate(
+          octokit.rest.packages.getAllPackageVersionsForPackageOwnedByOrg,
+          {
+            package_type: 'npm',
+            org: params.owner,
+            package_name: pkg,
+            per_page: 30
+          },
+          resp => resp.data
+        )
+      } else if (params.username) {
+        data = await octokit.paginate(
+          octokit.rest.packages.getAllPackageVersionsForPackageOwnedByUser,
+          {
+            package_type: 'npm',
+            username: params.username,
+            package_name: pkg,
+            per_page: 30
+          }
+        )
+      }
+
       return data
         .map<DeleteVersion>(d => ({id: d.id, name: d.name}))
         .filter(({name}) => {
@@ -57,12 +72,21 @@ export const deletePackages = async (params: OctokitParams): Promise<void> => {
   }
   const patchDelete = Object.keys(packages).map(pkgName => {
     return packages[pkgName].map(async version => {
-      return octokit.packages.deletePackageVersionForOrg({
-        package_type: 'npm',
-        package_version_id: version.id,
-        package_name: pkgName,
-        org: params.owner
-      })
+      if (params.owner) {
+        return octokit.packages.deletePackageVersionForOrg({
+          package_type: 'npm',
+          package_version_id: version.id,
+          package_name: pkgName,
+          org: params.owner
+        })
+      } else if (params.username) {
+        return octokit.packages.deletePackageVersionForAuthenticatedUser({
+          package_type: 'npm',
+          package_version_id: version.id,
+          package_name: pkgName,
+          username: params.username
+        })
+      }
     })
   })
   await Promise.all(patchDelete)

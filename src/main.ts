@@ -6,6 +6,7 @@ async function run(): Promise<void> {
   try {
     const githubToken = core.getInput('github_token')
     const owner = core.getInput('owner')
+    const username = core.getInput('username')
     const repo = core.getInput('repo')
     const packages = core.getMultilineInput('packages')
     const semVerPattern = core.getInput('max_semver_pattern')
@@ -14,6 +15,7 @@ async function run(): Promise<void> {
     await deletePackages({
       githubToken,
       owner,
+      username,
       repo,
       packages,
       semVerPattern,
