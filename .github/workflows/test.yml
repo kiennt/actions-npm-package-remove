@@ -41,3 +41,23 @@ jobs:
             miniapp-simulator
           max_semver_pattern: 1.15.0
           dry_run: true
+
+      - uses: ./
+        with:
+          github_token: ${{secrets.MY_GITHUB_TOKEN}}
+          username: hoangviet
+          repo: tiki-miniapp
+          packages: |
+            tf-miniapp-core
+            tf-miniapp
+            rml-runtime
+            tf-miniapp-compiler
+            rml
+            tcss
+            miniapp-integration-ide
+            miniapp-devtools
+            miniapp-cli
+            txml-language-server
+            miniapp-crawler
+          max_semver_pattern: 1.75.0
+          dry_run: true
